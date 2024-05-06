@@ -2,8 +2,6 @@ import random
 
 clubs, diamonds, hearts, spades, result, result_comp = [], [], [], [], [], []
 score = 21
-player_diff = 0
-comp_diff = 0
 
 def fill_deck(lst:list):
     for i in range(8):
