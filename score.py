@@ -98,5 +98,3 @@ elif sum_player > score or sum_comp == score:
     print('Your score is:\n', sum_player)
     print('Comp\'s score is:\n', sum_comp)
     print("You loose :(")
-
-print('\n', result_comp)
