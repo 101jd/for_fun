@@ -90,7 +90,7 @@ sum_comp = calculate(result_comp)
 if sum_player == score:
     winner()
 elif sum_player < score:
-    if sum_player >= sum_comp:
+    if sum_player >= sum_comp and sum_comp < score:
         winner()
     elif sum_comp > score:
         winner()
