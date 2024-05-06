@@ -91,12 +91,14 @@ sum_player = calculate(result)
 sum_comp = calculate(result_comp)
 if sum_player == score:
     winner()
-elif calculate(result) < score:
-    player_diff = score - sum_player
-    comp_diff = score - sum_comp
+elif sum_player < score:
     if sum_player >= sum_comp:
+        winner()
+    elif sum_comp > score:
         winner()
     else:
         looser()
 elif sum_player > score or sum_comp == score:
     looser()
+    
+print('\n', result_comp)
