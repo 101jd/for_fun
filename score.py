@@ -78,23 +78,25 @@ while len(deck) != 0 and flag:
         if check >= score:
             flag = False
                 
+def winner():
+    print('Your score is:\n', sum_player)
+    print('Comp\'s score is:\n', sum_comp)
+    print('You\'re winner!')
+def looser():
+    print('Your score is:\n', sum_player)
+    print('Comp\'s score is:\n', sum_comp)
+    print("You loose :(")
 # calculate score
 sum_player = calculate(result)
 sum_comp = calculate(result_comp)
 if sum_player == score:
-    print('Your score is:\n', sum_player)
-    print('Comp\'s score is:\n', sum_comp)
-    print('You\'re winner!')
+    winner()
 elif calculate(result) < score:
     player_diff = score - sum_player
     comp_diff = score - sum_comp
     if sum_player >= sum_comp:
-        print('Your score is:\n', sum_player)
-        print('Comp\'s score is:\n', sum_comp)
-        print('You\'re winner!')
+        winner()
     else:
-        print("You loose :(")
+        looser()
 elif sum_player > score or sum_comp == score:
-    print('Your score is:\n', sum_player)
-    print('Comp\'s score is:\n', sum_comp)
-    print("You loose :(")
+    looser()
