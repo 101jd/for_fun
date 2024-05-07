@@ -12,10 +12,14 @@ class Todolist:
         self.task = {}
     
     def get_val_first(self):
-        print(self.items[len(self.items) - 1])
+        if not self.is_empty():
+            print(self.items[len(self.items) - 1])
+        else: print("The todolist is empty")
     
     def get_val_last(self):
-        print(self.items[0])
+        if not self.is_empty():
+            print(self.items[0])
+        else: print("The todolist is empty")
     
     def get_first(self):
         if not self.is_empty():
@@ -34,8 +38,7 @@ class Todolist:
     def sort_by_priority(self):
         if not self.is_empty():
             self.items = sorted(self.items, key=max, reverse=True)
-        else: print("The todolist is empty")
-    
+                
     def print(self):
         if not self.is_empty():
             print(self.items)
@@ -44,14 +47,17 @@ class Todolist:
     def clear(self):
         self.items.clear()
         
+def menu():
+    print('========\n\'A\' to add task\n\'F\' to show first task\n\'L\' to show last task\n\'CF\' to complete first task\n\'CL\' to complete last task\n\'S\' to sort tasks by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist\n\'C\' to clear todolist\n\'Q\' to quit\n========')
+
 
 todo = Todolist()
 todo.__init__
 
 flag_menu = True
+menu()
 while flag_menu:
-    print('========\n\'A\' to add task\n\'F\' to show first task\n\'L\' to show last task\n\'CF\' to complete first task\n\'CL\' to complete last task\n\'S\' to sort tasks by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist\n\'C\' to clear todolist\n\'Q\' to quit\n========')
-    inp = str.lower(input())
+    inp = str.lower(input('Enter command (\'M\' to see menu): '))
     if inp == 'a':
         string = input('введите задачу: ')
         priority = int(input('Введите приоритет: '))
@@ -75,3 +81,5 @@ while flag_menu:
         todo.clear()
     elif inp == 'q':
         flag_menu = False
+    elif 'm':
+        menu()
