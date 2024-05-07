@@ -41,13 +41,16 @@ class Todolist:
             print(self.items)
         else: print("The todolist is empty")
         
+    def clear(self):
+        self.items.clear()
+        
 
 todo = Todolist()
 todo.__init__
 
 flag_menu = True
 while flag_menu:
-    print('========\n\'A\' to add task\n\'F\' to show first task\n\'L\' to show last task\n\'CF\' to complete first task\n\'CL\' to complete last task\n\'S\' to sort tasks by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist\n\'Q\' to quit\n========')
+    print('========\n\'A\' to add task\n\'F\' to show first task\n\'L\' to show last task\n\'CF\' to complete first task\n\'CL\' to complete last task\n\'S\' to sort tasks by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist\n\'C\' to clear todolist\n\'Q\' to quit\n========')
     inp = str.lower(input())
     if inp == 'a':
         string = input('введите задачу: ')
@@ -63,9 +66,12 @@ while flag_menu:
         todo.get_last()
     elif inp == 's':
         todo.sort_by_priority()
+        todo.print()
     elif inp == 'n':
         print(f'There is {todo.size()} tasks in list')
     elif inp == 'p':
         todo.print()
+    elif inp == 'c':
+        todo.clear()
     elif inp == 'q':
         flag_menu = False
