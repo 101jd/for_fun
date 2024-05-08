@@ -15,6 +15,7 @@ class Todolist:
         self.items.insert(0, self.elem)
         self.task = {}
         self.elem = {}
+        
     
     def get_val_first(self):
         if not self.is_empty():
@@ -72,7 +73,8 @@ class Todolist:
                 for j in range(len(self.items)):
                     self.key_items = re.findall(r'\d', str(self.result[i].keys()))[0]
                     self.key_result = re.findall(r'\d+', str(self.items[j].items()))[1]
-                    if self.key_items == self.key_result:
+                    print(self.key_items)
+                    if self.key_items == self.key_result and self.items[j] not in self.sortd:
                         self.sortd.append(self.items[j])
             self.items = self.sortd
 
@@ -89,15 +91,11 @@ class Todolist:
 def menu():
     print('========\n\'A\' to add task\n\'F\' to show first task\n\'L\' to show last task')
     print('\'CF\' to complete first task\n\'CL\' to complete last task\n\'SN\' to sort tasks by number')
-    print('\'SP\' to sort by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist\n')
-    print('\'C\' to clear todolist\n\'D\' to delete task by number\'Q\' to quit\n========')
+    print('\'SP\' to sort by priority\n\'N\' to get numer of tasks\n\'P\' to print todolist')
+    print('\'C\' to clear todolist\n\'D\' to delete task by number\n\'Q\' to quit\n========')
 
 todo = Todolist()
 todo.__init__
-
-todo.add('qwerty', 8, 1)
-todo.add('asdfg', 4, 2)
-todo.add('zxcvb', 5, 3)
 
 flag_menu = True
 menu()
@@ -105,8 +103,8 @@ i = 1
 while flag_menu:
     inp = str.lower(input('Enter command (\'M\' to see menu): '))
     if inp == 'a':
-        string = input('введите задачу: ')
-        priority = int(input('Введите приоритет: '))
+        string = input('Enter a task: ')
+        priority = int(input('Enter priority: '))
         todo.add(string, priority, i)
         i += 1
     elif inp == 'f':
@@ -128,7 +126,7 @@ while flag_menu:
     elif inp == 'p':
         todo.print()
     elif inp == 'd':
-        number = input('Введите номер задачи: ')
+        number = input('Enter the number of task: ')
         todo.del_task(number)
     elif inp == 'c':
         todo.clear()
