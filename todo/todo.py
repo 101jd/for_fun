@@ -73,7 +73,6 @@ class Todolist:
                 for j in range(len(self.items)):
                     self.key_items = re.findall(r'\d', str(self.result[i].keys()))[0]
                     self.key_result = re.findall(r'\d+', str(self.items[j].items()))[1]
-                    print(self.key_items)
                     if self.key_items == self.key_result and self.items[j] not in self.sortd:
                         self.sortd.append(self.items[j])
             self.items = self.sortd
