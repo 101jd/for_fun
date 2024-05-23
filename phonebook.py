@@ -38,7 +38,7 @@ class PhoneBook:
         # print(self.book)
             
     def sort_by(self, skey:str):
-        self.book = sorted(self.book, key=lambda x: x[skey])
+        self.book = sorted(self.book, key=lambda x: x[skey] if isinstance(x, dict) and skey in x else "")
         
     def search(self, substring:str):
         check = False
@@ -66,7 +66,7 @@ class PhoneBook:
         self.book = self.temp
         
     def save(self):
-        with open('book.txt', 'a+') as file:
+        with open('book.txt', 'a') as file:
             for el in self.book:
                 file.write(f'{str(el)}%')
                 
@@ -77,7 +77,8 @@ class PhoneBook:
             for el in self.book:
                 if el != "":
                     el = json.loads(el.replace("'", '"'))
-            #     print(type(el))
+                print(type(el))
+                print(el)
             # print(self.book)
             
                 
@@ -90,7 +91,7 @@ def menu():
     print('\'D\' to delete record')
     print('\'S\' to save book\n\'Q\' to quit')
 pb = PhoneBook()
-pb.__init__()
+# pb.__init__()
 
 flag = True
 
