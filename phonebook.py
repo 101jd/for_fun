@@ -7,7 +7,7 @@ v 5 edit by key
 v 6 delete el by uniq num
 7 menu
 '''
-import ast
+import json
 
 class PhoneBook:
     def __init__(self) -> None:
@@ -28,7 +28,7 @@ class PhoneBook:
         if len(self.lst) > 2:
             self.rec['Address'] = self.lst[2]
         else:
-            self.rec['Address'] = ""
+            self.rec['Address'] = "-"
         
         self.book.append(self.rec)
         self.rec = {}
@@ -38,9 +38,7 @@ class PhoneBook:
         # print(self.book)
             
     def sort_by(self, skey:str):
-        def get_data(x):
-            return x[skey]
-        self.book = sorted(self.book, key=get_data)
+        self.book = sorted(self.book, key=lambda x: x[skey])
         
     def search(self, substring:str):
         check = False
@@ -75,10 +73,12 @@ class PhoneBook:
     def load(self):
         with open('book.txt', 'r') as file:
             self.book = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
-            self.test = []
+            self.book.pop()
             for el in self.book:
-                el = eval(f'"{el}"')
-            
+                if el != "":
+                    el = json.loads(el.replace("'", '"'))
+            #     print(type(el))
+            # print(self.book)
             
                 
 def menu():
