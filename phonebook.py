@@ -53,17 +53,36 @@ class PhoneBook:
             print(f'There is no entries with {substring}')
             
     def edit(self, num:int, key:str, val:str):
+        self.test = []
+        for el in self.book:
+            if el != "":
+                self.test.append(json.loads(el.replace("'", '"')))
+        self.book = self.test
+        for el in self.book:
+            print(type(el), el)
         for el in self.book:
             if num in el.values():
                 el[key] = val
+                print(el)
+        with open('book.txt', 'w') as file:
+            for el in self.book:
+                file.write(f'{str(el)}%')
                 
     def delete(self, num):
+        self.test = []
+        for el in self.book:
+            if el != "":
+                self.test.append(json.loads(el.replace("'", '"')))
+        self.book = self.test
         self.temp = []
         for el in self.book:
             if num in el.values():
                 continue
             self.temp.append(el)
         self.book = self.temp
+        with open('book.txt', 'w') as file:
+            for el in self.book:
+                file.write(f'{str(el)}%')
         
     def save(self):
         with open('book.txt', 'a') as file:
@@ -77,9 +96,6 @@ class PhoneBook:
             for el in self.book:
                 if el != "":
                     el = json.loads(el.replace("'", '"'))
-                print(type(el))
-                print(el)
-            # print(self.book)
             
                 
 def menu():
@@ -91,7 +107,6 @@ def menu():
     print('\'D\' to delete record')
     print('\'S\' to save book\n\'Q\' to quit')
 pb = PhoneBook()
-# pb.__init__()
 
 flag = True
 
@@ -99,12 +114,9 @@ menu()
 
 with open('config.txt', 'r') as config_r:
     val = str(*config_r)
-    print(val)
     if len(val) < 1:
         i = 1
     else: i = int(val)
-
-print(i)
 
 while flag:
     inp = str.lower(input('Enter command (\'M\' to see menu)'))
@@ -149,7 +161,6 @@ while flag:
     elif inp == 's':
         pb.save()
         with open('config.txt', 'w') as config_w:
-            print(i)
             config_w.write(str(i))
     
     elif inp == 'q':
