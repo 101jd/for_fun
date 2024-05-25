@@ -70,17 +70,20 @@ class PhoneBook:
                 file.write(f'{str(el)}%')
                 
     def delete(self, num):
-        self.test = []
-        for el in self.book:
-            if el != "":
-                self.test.append(json.loads(el.replace("'", '"')))
-        self.book = self.test
-        self.temp = []
-        for el in self.book:
-            if num in el.values():
-                continue
-            self.temp.append(el)
-        self.book = self.temp
+        if len(self.book) > 1:
+            self.test = []
+            for el in self.book:
+                if el != "":
+                    self.test.append(json.loads(el.replace("'", '"')))
+            self.book = self.test
+            self.temp = []
+            for el in self.book:
+                if num in el.values():
+                    continue
+                self.temp.append(el)
+            self.book = self.temp
+        else:
+            self.book = []
         with open('book.txt', 'w') as file:
             for el in self.book:
                 file.write(f'{str(el)}%')
@@ -164,7 +167,7 @@ while flag:
                 input('Enter new value: '))
     # delete
     elif inp == 'd':
-        pb.delete(int(input('Enter nubber of record: ')))
+        pb.delete(int(input('Enter number of record to delete: ')))
     # save  
     elif inp == 's':
         pb.save()
