@@ -8,6 +8,7 @@ v 6 delete el by uniq num
 7 menu
 '''
 import json
+import os
 
 class PhoneBook:
     def __init__(self) -> None:
@@ -90,12 +91,19 @@ class PhoneBook:
                 file.write(f'{str(el)}%')
                 
     def load(self):
-        with open('book.txt', 'r') as file:
-            self.book = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
-            self.book.pop()
-            for el in self.book:
-                if el != "":
-                    el = json.loads(el.replace("'", '"'))
+        if not os.path.exists('book.txt'):
+            try:
+                file = open('book.txt', 'w')
+                self.book = []
+            finally:
+                file.close()
+        else:
+            with open('book.txt', 'r') as file:
+                self.book = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
+                self.book.pop()
+                for el in self.book:
+                    if el != "":
+                        el = json.loads(el.replace("'", '"'))
             
                 
 def menu():
