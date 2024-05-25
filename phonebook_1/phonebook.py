@@ -45,7 +45,7 @@ class PhoneBook:
         check = False
         strings = []
         for el in self.book:
-            if substring in str(el):
+            if substring.lower() in str(el).lower():
                 check = True
                 strings.append(el)
         if check:
