@@ -89,9 +89,20 @@ class PhoneBook:
                 file.write(f'{str(el)}%')
         
     def save(self):
-        with open('book.txt', 'a') as file:
+        # self.check = self.book.copy()
+        with open('book.txt', 'r') as file:
+            self.saved = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
+        with open('book.txt', 'a+') as file:
+            self.saved.pop()
+            print('check\n', self.saved)
+            print('book\n', self.book)
             for el in self.book:
-                file.write(f'{str(el)}%')
+                if str(el) not in self.saved:
+                    file.write(f'{str(el)}%')
+        with open('book.txt', 'r') as file:
+            self.saved = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
+            # for el in self.book:
+            #     file.write(f'{str(el)}%')
                 
     def load(self):
         if not os.path.exists('book.txt'):
@@ -107,7 +118,17 @@ class PhoneBook:
                 for el in self.book:
                     if el != "":
                         el = json.loads(el.replace("'", '"'))
-            
+            self.test = []
+            for el in self.book:
+                if el != "":
+                    self.test.append(json.loads(el.replace("'", '"')))
+            self.book = self.test
+                        
+    def is_changes(self):
+        with open('book.txt', 'r') as file:
+            self.check = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
+            self.check.pop()
+        return str(self.book) == str(self.check)            
                 
 def menu():
     print('========PHONE BOOK========')
@@ -175,6 +196,14 @@ while flag:
             config_w.write(str(i))
     
     elif inp == 'q':
+        if not pb.is_changes():
+            save = input('Save changes? Y/n: ').lower()
+            if save == 'y':
+                pb.save()
+                with open('config.txt', 'w') as config_w:
+                    config_w.write(str(i))
+            elif save == 'n':
+                flag = False
         flag = False
         
     elif inp == 'm':
