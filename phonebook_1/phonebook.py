@@ -63,6 +63,7 @@ class PhoneBook:
         if len(self.book) > 1:
             self.test = []
             for el in self.book:
+                el = str(el)
                 if el != "":
                     self.test.append(json.loads(el.replace("'", '"')))
             self.book = self.test
