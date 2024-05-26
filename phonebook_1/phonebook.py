@@ -47,10 +47,10 @@ class PhoneBook:
         self.test = []
         for el in self.book:
             if el != "":
-                self.test.append(json.loads(el.replace("'", '"')))
+                self.test.append(json.loads(str(el).replace("'", '"')))
         self.book = self.test
-        for el in self.book:
-            print(type(el), el)
+        # for el in self.book:
+            # print(type(el), el)
         for el in self.book:
             if num in el.values():
                 el[key] = val
@@ -84,8 +84,8 @@ class PhoneBook:
             self.saved = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
         with open('book.txt', 'a+') as file:
             self.saved.pop()
-            print('check\n', self.saved)
-            print('book\n', self.book)
+            # print('check\n', self.saved)
+            # print('book\n', self.book)
             for el in self.book:
                 if str(el) not in self.saved:
                     file.write(f'{str(el)}%')
