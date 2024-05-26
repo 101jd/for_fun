@@ -116,4 +116,4 @@ class PhoneBook:
         with open('book.txt', 'r') as file:
             self.check = str(file.readlines()).replace('"', '').replace('[', '').replace(']', '').split('%')
             self.check.pop()
-        return str(self.book) == str(self.check)            
+        return list(map(str, self.book)) == self.check            
