@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QMainWindow, QFileDialog, QApplication, QMenuBar, QT
 class NoticeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Notice Book")
+        self.setWindowTitle("Simple Notes")
         self.setContentsMargins(0, 0, 0, 30)
         self.setMenuBar(self.menu_bar)
         
@@ -27,7 +27,7 @@ class NoticeWindow(QMainWindow):
         option = QFileDialog().options()
         path = self.save_as_dial.getSaveFileName(self.text_field, "Save file", "default.txt", "*.txt", options=option)[0]
         
-        with open (f'{path}', 'w') as file:
+        with open (f'{path}', 'w', encoding="utf-8") as file:
             file.write(self.text_field.toPlainText())
             
         self.save_opt.setChecked(False)
@@ -36,7 +36,7 @@ class NoticeWindow(QMainWindow):
         option = QFileDialog().options()
         path = self.save_as_dial.getOpenFileName(self.text_field, "Load File", "", "*.txt", options=option)[0]
         
-        with open(f'{path}', 'r') as file:
+        with open(f'{path}', 'r', encoding="utf-8") as file:
             self.text_field.setText(file.read())
             
         self.load_opt.setChecked(False)
