@@ -26,9 +26,9 @@ class NoticeWindow(QMainWindow):
     def save_text(self):
         option = QFileDialog().options()
         path = self.save_as_dial.getSaveFileName(self.text_field, "Save file", "default.txt", "*.txt", options=option)[0]
-        
-        with open (f'{path}', 'w', encoding="utf-8") as file:
-            file.write(self.text_field.toPlainText())
+        if path != "":
+            with open (f'{path}', 'w', encoding="utf-8") as file:
+                file.write(self.text_field.toPlainText())
             
         self.save_opt.setChecked(False)
         
@@ -36,8 +36,9 @@ class NoticeWindow(QMainWindow):
         option = QFileDialog().options()
         path = self.save_as_dial.getOpenFileName(self.text_field, "Load File", "", "*.txt", options=option)[0]
         
-        with open(f'{path}', 'r', encoding="utf-8") as file:
-            self.text_field.setText(file.read())
+        if path != "":
+            with open(f'{path}', 'r', encoding="utf-8") as file:
+                self.text_field.setText(file.read())
             
         self.load_opt.setChecked(False)
             
