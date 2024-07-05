@@ -176,6 +176,7 @@ class TODOWindow(QMainWindow):
             self.cl = rw.read(path)[1]
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
+        self.completed.addItems([el.to_string() for el in self.cl.get_list()])
         self.tb = TaskBuilder(self.todolist.get_last_number() + 1)
         self.load_opt.setChecked(False)
         

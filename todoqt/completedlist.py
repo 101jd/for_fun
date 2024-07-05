@@ -11,3 +11,6 @@ class CompletedList:
         
     def clear(self):
         self.__completed.clear()
+        
+    def get_list(self):
+        return self.__completed
