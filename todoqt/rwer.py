@@ -8,6 +8,9 @@ class ReadWriter():
     
     lst:list
     
+    def __init__(self) -> None:
+        self.lst = []
+    
     def write(self, tasks, completed, path):
         self.lst.append(tasks)
         self.lst.append(completed)

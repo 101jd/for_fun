@@ -25,6 +25,7 @@ class TODOWindow(QMainWindow):
         self.todolist = TodoLost([])
         self.tb = TaskBuilder(0)
         self.cl = CompletedList()
+        print('init', type(self.cl))
         
         self.add_task_butt.clicked.connect(self.add_button_clicked)
         self.complete_butt.clicked.connect(self.complete_butt_clicked)
@@ -125,10 +126,11 @@ class TODOWindow(QMainWindow):
         
     def complete_butt_clicked(self):
         if not self.todolist.is_empty():
-            self.todolist.complete_task(self.output.currentRow())
-            task = self.output.takeItem(self.output.currentRow())
+            task = self.todolist.complete_task(self.output.currentRow())
+            self.output.takeItem(self.output.currentRow())
             self.cl.add_task(task)
-            self.completed.addItem(task)
+            print('complete', type(self.cl))
+            self.completed.addItem(task.to_string())
             
     def delete_task(self):
         if not self.todolist.is_empty():
@@ -154,6 +156,7 @@ class TODOWindow(QMainWindow):
     def new_list(self):
         self.todolist = TodoLost([])
         self.cl.clear()
+        print('new', type(self.cl))
         self.tb = TaskBuilder(0)
         self.output.clear()
         self.completed.clear()
@@ -164,6 +167,7 @@ class TODOWindow(QMainWindow):
         option = QFileDialog().options()
         path = self.save_as_dial.getSaveFileName(self.text_field, "Save file", "default.pickle", "*.pickle", options=option)[0]
         if path != "":
+            print('save', type(self.cl))
             rw.write(self.todolist, self.cl, path)
         self.save_opt.setChecked(False)
             
@@ -173,6 +177,7 @@ class TODOWindow(QMainWindow):
         path = self.save_as_dial.getOpenFileName(self.text_field, "Load File", "", "*.pickle", options=option)[0]
         if path != "":
             self.todolist = rw.read(path)[0]
+            print('read', type(self.cl))
             self.cl = rw.read(path)[1]
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
