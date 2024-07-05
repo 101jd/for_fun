@@ -13,6 +13,9 @@ class Task:
     
     def get_priority(self):
         return self.__priority
+    
+    def get_description(self):
+        return self.__description
         
     def edit(self, priority:int, description:str):
         self.__priority = priority
@@ -20,3 +23,6 @@ class Task:
         
     def to_string(self):
         return f'# {self.__number} prior: {self.__priority} = {self.__description}'
+    
+    def get_number(self):
+        return self.__number

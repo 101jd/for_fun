@@ -5,10 +5,14 @@ import json
 import pickle
 
 class ReadWriter():
-    def write(self, tasks, path):
-        
+    
+    lst:list
+    
+    def write(self, tasks, completed, path):
+        self.lst.append(tasks)
+        self.lst.append(completed)
         with open(path, 'wb') as file:
-            pickle.dump(tasks, file)
+            pickle.dump(self.lst, file)
         
     def read(self, path):
         with open(path, 'rb') as file:
