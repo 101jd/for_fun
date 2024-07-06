@@ -156,7 +156,7 @@ class TODOWindow(QMainWindow):
     def new_list(self):
         self.todolist = TodoLost([])
         self.cl.clear()
-        print('new', type(self.cl))
+        # print('new', type(self.cl))
         self.tb = TaskBuilder(0)
         self.output.clear()
         self.completed.clear()

@@ -25,10 +25,12 @@ class TodoLost:
         return self.__todolist
     
     def sort_by_num(self):
-        return sorted(self.__todolist, key=lambda x : x.get_number())
+        self.__todolist = sorted(self.__todolist, key=lambda x : x.get_number())
+        return self.__todolist
     
     def sort_by_priority(self):
-        return sorted(self.__todolist, key=lambda x : x.get_priority()) 
+        self.__todolist = sorted(self.__todolist, key=lambda x : x.get_priority())
+        return self.__todolist
     
     def is_empty(self):
         return self.__todolist == []
