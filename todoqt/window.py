@@ -41,6 +41,7 @@ class TODOWindow(QMainWindow):
         self.load_opt.setCheckable(True)
         self.load_opt.triggered.connect(self.load_list)
         self.output.itemClicked.connect(self.item_selected)
+        self.completed.itemClicked.connect(self.completed_selected)
         
         
     app = QApplication([])
@@ -188,6 +189,9 @@ class TODOWindow(QMainWindow):
     def item_selected(self):
         text = self.todolist.get_task(self.output.currentRow()).get_description()
         self.text_field.setText(text)
+        
+    def completed_selected(self):
+        self.text_field.clear()
                 
     def size(self):
         return self.todolist.size()
