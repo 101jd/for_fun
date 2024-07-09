@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QMenuBar, QLineEdit, QFileDialog, QLabel, QListWidget, QListWidgetItem, QListView, QPushButton, QSpinBox, QMainWindow
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QIcon
 
 from todolist import TodoLost
 from completedlist import CompletedList
@@ -21,11 +21,14 @@ class TODOWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('TODO')
+        self.setWindowIcon(self.icon)
         self.setCentralWidget(self.widget)
         self.todolist = TodoLost([])
         self.tb = TaskBuilder(0)
-        self.cl = CompletedList()
+        self.cl = CompletedList([])
         print('init', type(self.cl))
+        self.todosaved = TodoLost(self.todolist.get_todo_list().copy())
+        self.clsaved = CompletedList(self.cl.get_list().copy())
         
         self.add_task_butt.clicked.connect(self.add_button_clicked)
         self.complete_butt.clicked.connect(self.complete_butt_clicked)
@@ -33,6 +36,7 @@ class TODOWindow(QMainWindow):
         self.sort_num_butt.clicked.connect(self.sort_num_butt_clicked)
         self.sort_prior_butt.clicked.connect(self.sort_prior_butt_clicked)
         self.delete_butt.clicked.connect(self.delete_task)
+        self.cancel_butt.clicked.connect(self.cancel_butt_clicked)
         
         self.new_opt.setCheckable(True)
         self.new_opt.triggered.connect(self.new_list)
@@ -45,7 +49,8 @@ class TODOWindow(QMainWindow):
         
         
     app = QApplication([])
-    
+    icon = QIcon()
+    icon.addFile('icon.jpg')
     # WIDGETS & LAYOUTS:
     vbox = QVBoxLayout() # ОБЩАЯ ВЕРТИКАЛЬ
     widget = QWidget() # ОСНОВНОЙ ВИДЖЕТ
@@ -61,6 +66,7 @@ class TODOWindow(QMainWindow):
     
     vhwidget_1 = QWidget()
     vhwidget_2 = QWidget()
+    vhwidget_3 = QWidget()
     
     file_opt = menu.addMenu('File')
     new_opt = file_opt.addAction('New')
@@ -92,10 +98,18 @@ class TODOWindow(QMainWindow):
     hbox_2.addWidget(sort_num_butt)
     hbox_2.addWidget(sort_prior_butt)
     hbox_2.addWidget(edit_butt)
-    hbox_2.addWidget(complete_butt)
-    hbox_2.addWidget(delete_butt)
+    # hbox_2.addWidget(complete_butt)
+    # hbox_2.addWidget(delete_butt)
     
-    vhwidget_1.setLayout(hbox_1)
+    hbox_3 = QHBoxLayout() # COMPLETE DELETE EDIT (MIDDLE)
+    cancel_butt = QPushButton()
+    cancel_butt.setText('Cancel')
+    
+    hbox_3.addWidget(complete_butt)
+    hbox_3.addWidget(delete_butt)
+    hbox_3.addWidget(cancel_butt)
+    
+    # vhwidget_1.setLayout(hbox_1)
 
     output.setAutoScroll(True)
     
@@ -109,7 +123,9 @@ class TODOWindow(QMainWindow):
     
     vhwidget_1.setLayout(hbox_1)
     vhwidget_2.setLayout(hbox_2)
+    vhwidget_3.setLayout(hbox_3)
     vbox.addWidget(vhwidget_1)
+    vbox.addWidget(vhwidget_3)
     vbox.addWidget(vhwidget_2)
     widget.setLayout(vbox)
     # END OF WIDGETS & LAYOUTS
@@ -119,6 +135,7 @@ class TODOWindow(QMainWindow):
     ## SLOTS
     
     def add_button_clicked(self):
+        self.__save_current()
         task = self.tb.new_task(self.set_prior.value(), self.text_field.displayText())
         self.todolist.add_task(task)
         item = QListWidgetItem(task.to_string())
@@ -127,6 +144,7 @@ class TODOWindow(QMainWindow):
         
     def complete_butt_clicked(self):
         if not self.todolist.is_empty():
+            self.__save_current()
             task = self.todolist.complete_task(self.output.currentRow())
             self.output.takeItem(self.output.currentRow())
             self.cl.add_task(task)
@@ -135,26 +153,39 @@ class TODOWindow(QMainWindow):
             
     def delete_task(self):
         if not self.todolist.is_empty():
+            self.__save_current()
             self.todolist.complete_task(self.output.currentRow())
             self.output.takeItem(self.output.currentRow())
         
     def edit_butt_clicked(self):
         if self.output.currentRow() > -1:
+            self.__save_current()
             task:Task = self.todolist.get_task(self.output.currentRow())
             task.edit(self.set_prior.value(), self.text_field.displayText())
             self.output.clear()
             self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
             self.text_field.clear()
+            
+    def cancel_butt_clicked(self):
+        self.todolist = TodoLost(self.todosaved.get_todo_list().copy())
+        self.cl = CompletedList(self.clsaved.get_list().copy())
+        self.output.clear()
+        self.completed.clear()
+        self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
+        self.completed.addItems([el.to_string() for el in self.cl.get_list()])
         
     def sort_num_butt_clicked(self):
+        self.__save_current()
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.sort_by_num()])
         
     def sort_prior_butt_clicked(self):
+        self.__save_current()
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.sort_by_priority()])
         
     def new_list(self):
+        self.__save_current()
         self.todolist = TodoLost([])
         self.cl.clear()
         # print('new', type(self.cl))
@@ -195,6 +226,10 @@ class TODOWindow(QMainWindow):
                 
     def size(self):
         return self.todolist.size()
+    
+    def __save_current(self):
+        self.todosaved = TodoLost(self.todolist.get_todo_list().copy())
+        self.clsaved = CompletedList(self.cl.get_list().copy())
     
 window = TODOWindow()
 window.show()

@@ -2,8 +2,8 @@ from Task import Task
 
 class CompletedList:
     __completed:list
-    def __init__(self):
-        self.__completed = []
+    def __init__(self, lst:list):
+        self.__completed = lst
         
 
     def add_task(self, task:Task):
