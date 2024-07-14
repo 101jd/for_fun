@@ -21,7 +21,7 @@ class TODOWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('TODO')
-        self.setWindowIcon(self.icon)
+        # self.setWindowIcon(self.icon)
         self.setCentralWidget(self.widget)
         self.todolist = TodoLost([])
         self.tb = TaskBuilder(0)
@@ -49,8 +49,10 @@ class TODOWindow(QMainWindow):
         
         
     app = QApplication([])
-    icon = QIcon()
-    icon.addFile('icon.jpg')
+    icon_small = QIcon('icon1.ico')
+    icon = QIcon('icon512.ico')
+    # icon.addFile('icon.ico')
+    # app.setWindowIcon(icon)
     # WIDGETS & LAYOUTS:
     vbox = QVBoxLayout() # ОБЩАЯ ВЕРТИКАЛЬ
     widget = QWidget() # ОСНОВНОЙ ВИДЖЕТ
@@ -91,23 +93,24 @@ class TODOWindow(QMainWindow):
     complete_butt.setText('Complete')
     delete_butt = QPushButton()
     delete_butt.setText('Delete')
+    cancel_butt = QPushButton()
+    cancel_butt.setText('Cancel')
     
     hbox_1.addWidget(set_prior)
     hbox_1.addWidget(add_task_butt)
     
     hbox_2.addWidget(sort_num_butt)
     hbox_2.addWidget(sort_prior_butt)
-    hbox_2.addWidget(edit_butt)
+    hbox_2.addWidget(cancel_butt)
     # hbox_2.addWidget(complete_butt)
     # hbox_2.addWidget(delete_butt)
     
     hbox_3 = QHBoxLayout() # COMPLETE DELETE EDIT (MIDDLE)
-    cancel_butt = QPushButton()
-    cancel_butt.setText('Cancel')
+    
     
     hbox_3.addWidget(complete_butt)
     hbox_3.addWidget(delete_butt)
-    hbox_3.addWidget(cancel_butt)
+    hbox_3.addWidget(edit_butt)
     
     # vhwidget_1.setLayout(hbox_1)
 
@@ -232,6 +235,8 @@ class TODOWindow(QMainWindow):
         self.clsaved = CompletedList(self.cl.get_list().copy())
     
 window = TODOWindow()
+window.setWindowIcon(window.icon)
+TODOWindow.app.setWindowIcon(window.icon)
 window.show()
 
 TODOWindow.app.exec()

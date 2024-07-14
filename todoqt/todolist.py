@@ -36,5 +36,8 @@ class TodoLost:
         return self.__todolist == []
     
     def get_last_number(self):
-        self.sort_by_num()
-        return self.__todolist[len(self.__todolist) - 1].get_number()
+        if not self.is_empty():
+            self.sort_by_num()
+            return self.__todolist[len(self.__todolist) - 1].get_number()
+        else: return 0
+    
