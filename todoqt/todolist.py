@@ -40,4 +40,7 @@ class TodoLost:
             self.sort_by_num()
             return self.__todolist[len(self.__todolist) - 1].get_number()
         else: return 0
+        
+    def set_list(self, lst:list):
+        self.__todolist = lst
     

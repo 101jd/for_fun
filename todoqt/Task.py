@@ -8,6 +8,7 @@ class Task:
         self.__priority = priority
         self.__description = description
         
+        
     def get_number(self):
         return self.__number
     

@@ -27,8 +27,8 @@ class TODOWindow(QMainWindow):
         self.tb = TaskBuilder(0)
         self.cl = CompletedList([])
         print('init', type(self.cl))
-        self.todosaved = TodoLost(self.todolist.get_todo_list().copy())
-        self.clsaved = CompletedList(self.cl.get_list().copy())
+        self.todosaved = TodoLost([])
+        self.clsaved = CompletedList([])
         
         self.add_task_butt.clicked.connect(self.add_button_clicked)
         self.complete_butt.clicked.connect(self.complete_butt_clicked)
@@ -143,22 +143,30 @@ class TODOWindow(QMainWindow):
         self.todolist.add_task(task)
         item = QListWidgetItem(task.to_string())
         self.output.addItem(item)
-        self.text_field.clear()
+        self.clear_field()
+        #
+        self.output.setCurrentRow(-1)
         
     def complete_butt_clicked(self):
-        if not self.todolist.is_empty():
+        if not self.todolist.is_empty() and self.output.currentRow() > -1:
             self.__save_current()
             task = self.todolist.complete_task(self.output.currentRow())
-            self.output.takeItem(self.output.currentRow())
+            item = self.output.takeItem(self.output.currentRow())
             self.cl.add_task(task)
-            print('complete', type(self.cl))
-            self.completed.addItem(task.to_string())
+            # print('complete', type(self.cl))
+            self.completed.addItem(item)
+            self.clear_field()
+            #
+            self.output.setCurrentRow(-1)
             
     def delete_task(self):
-        if not self.todolist.is_empty():
+        if not self.todolist.is_empty() and self.output.currentRow() > -1:
             self.__save_current()
             self.todolist.complete_task(self.output.currentRow())
             self.output.takeItem(self.output.currentRow())
+            self.clear_field()
+            #
+            self.output.setCurrentRow(-1)
         
     def edit_butt_clicked(self):
         if self.output.currentRow() > -1:
@@ -167,25 +175,34 @@ class TODOWindow(QMainWindow):
             task.edit(self.set_prior.value(), self.text_field.displayText())
             self.output.clear()
             self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
-            self.text_field.clear()
+            self.clear_field()
             
     def cancel_butt_clicked(self):
-        self.todolist = TodoLost(self.todosaved.get_todo_list().copy())
-        self.cl = CompletedList(self.clsaved.get_list().copy())
+        self.todolist.set_list([self.tb.new_from_task(el) for el in self.todosaved.get_todo_list().copy()])
+        self.cl.set_list([self.tb.new_from_task(el) for el in self.clsaved.get_list().copy()])
         self.output.clear()
         self.completed.clear()
         self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
         self.completed.addItems([el.to_string() for el in self.cl.get_list()])
+        self.clear_field()
+        #
+        self.output.setCurrentRow(-1)
         
     def sort_num_butt_clicked(self):
         self.__save_current()
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.sort_by_num()])
+        self.clear_field()
+        #
+        self.output.setCurrentRow(-1)
         
     def sort_prior_butt_clicked(self):
         self.__save_current()
         self.output.clear()
         self.output.addItems([el.to_string() for el in self.todolist.sort_by_priority()])
+        self.clear_field()
+        #
+        self.output.setCurrentRow(-1)
         
     def new_list(self):
         self.__save_current()
@@ -196,6 +213,9 @@ class TODOWindow(QMainWindow):
         self.output.clear()
         self.completed.clear()
         self.new_opt.setChecked(False)
+        self.clear_field()
+        #
+        self.output.setCurrentRow(-1)
         
     def save_list(self):
         rw = ReadWriter()
@@ -205,6 +225,8 @@ class TODOWindow(QMainWindow):
             print('save', type(self.cl))
             rw.write(self.todolist, self.cl, path)
         self.save_opt.setChecked(False)
+        #
+        self.output.setCurrentRow(-1)
             
     def load_list(self):
         rw = ReadWriter()
@@ -215,24 +237,32 @@ class TODOWindow(QMainWindow):
             print('read', type(self.cl))
             self.cl = rw.read(path)[1]
         self.output.clear()
+        self.completed.clear()
         self.output.addItems([el.to_string() for el in self.todolist.get_todo_list()])
         self.completed.addItems([el.to_string() for el in self.cl.get_list()])
         self.tb = TaskBuilder(self.todolist.get_last_number() + 1)
         self.load_opt.setChecked(False)
+        #
+        self.output.setCurrentRow(-1)
         
     def item_selected(self):
         text = self.todolist.get_task(self.output.currentRow()).get_description()
         self.text_field.setText(text)
         
     def completed_selected(self):
+        #
+        self.output.setCurrentRow(-1)
+        self.clear_field()
+    
+    def clear_field(self):
         self.text_field.clear()
                 
     def size(self):
         return self.todolist.size()
     
     def __save_current(self):
-        self.todosaved = TodoLost(self.todolist.get_todo_list().copy())
-        self.clsaved = CompletedList(self.cl.get_list().copy())
+        self.todosaved.set_list([self.tb.new_from_task(el) for el in self.todolist.get_todo_list().copy()])
+        self.clsaved.set_list([self.tb.new_from_task(el) for el in self.cl.get_list().copy()])
     
 window = TODOWindow()
 window.setWindowIcon(window.icon)

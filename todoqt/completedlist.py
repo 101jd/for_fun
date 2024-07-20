@@ -14,3 +14,7 @@ class CompletedList:
         
     def get_list(self):
         return self.__completed
+    
+    def set_list(self, lst:list):
+        self.__completed = lst
+    

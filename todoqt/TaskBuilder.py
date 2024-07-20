@@ -10,4 +10,6 @@ class TaskBuilder:
         self.__number += 1
         return task
     
+    def new_from_task(self, peretask:Task):
+        return Task(peretask.get_number(), peretask.get_priority(), peretask.get_description())
         
